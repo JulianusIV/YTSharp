@@ -67,8 +67,8 @@ namespace YTSharp
                     {
                         Name = item.Snippet.Title,
                         Description = item.Snippet.Description,
-                        CreationTime = item.ContentDetails.VideoPublishedAt,
-                        URL = "https://www.youtube.com/watch?v=" + item.Id
+                        CreationTime = item.ContentDetails.VideoPublishedAt.Value.ToUniversalTime(),
+                        URL = item.Snippet.ResourceId.VideoId
                     });
 				}
 			}
