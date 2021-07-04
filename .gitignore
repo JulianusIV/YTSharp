@@ -266,4 +266,5 @@ FakesAssemblies/
 app.config
 error.txt
 launchSettings.json
-zipall.bat
+*.ps1
+?OUTPUT/

@@ -41,6 +41,7 @@ A json object with this template:
 ```json
 [{  
 	"ID": "Playlist ID",  
+	"Name": "Playlist title",  
 	"Videos":  
 	[{  
 		"Name": "Title of the video",  
