@@ -264,6 +264,6 @@ FakesAssemblies/
 
 # User defined files
 app.config
-app.config
 error.txt
 launchSettings.json
+zipall.bat
