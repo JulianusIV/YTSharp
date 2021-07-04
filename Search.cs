@@ -15,8 +15,8 @@ namespace YTSharp
         [STAThread]
         static void Main(string[] args)
         {
-            try
-            {
+            //try
+            //{
 				switch (args[0].ToUpper())
 				{
                     case "UPLOADS":
@@ -29,14 +29,14 @@ namespace YTSharp
 						Console.WriteLine("todo add help");
 						break;
 				}
-            }
-            catch (AggregateException ex)
-            {
-                foreach (var e in ex.InnerExceptions)
-                {
-                    Console.Error.WriteLine("Error: " + e.Message);
-                }
-            }
+            //}
+            //catch (AggregateException ex)
+            //{
+            //    foreach (var e in ex.InnerExceptions)
+            //    {
+            //        Console.Error.WriteLine("Error: " + e.Message);
+            //    }
+            //}
         }
 
 		private async Task RunUploads(string[] args)
@@ -106,6 +106,7 @@ namespace YTSharp
             //create a playlist request for all playlists of a channel
             var playlistListRequest = youtubeService.Playlists.List("snippet");
             playlistListRequest.ChannelId = args[Array.IndexOf(args, "-c") + 1];
+            playlistListRequest.MaxResults = 50;
 
             List<Models.Playlist> playlists = new();
             var playlistListResponse = await playlistListRequest.ExecuteAsync();
@@ -125,6 +126,7 @@ namespace YTSharp
                     //build playlist request
                     var playlistItemListRequest = youtubeService.PlaylistItems.List("snippet,contentDetails");
                     playlistItemListRequest.PlaylistId = item.Id;
+                    playlistItemListRequest.MaxResults = 50;
 
                     var playlistItemListResponse = await playlistItemListRequest.ExecuteAsync();
                     //for each available page of the response amount
@@ -133,6 +135,9 @@ namespace YTSharp
                         //foreach video in the playlist
 						foreach (var video in playlistItemListResponse.Items)
 						{
+                            //private videos have no timestamp lol
+                            if (video.ContentDetails.VideoPublishedAt == null)
+                                continue;
                             //add video to playlist
                             playlist.Videos.Add(new()
                             {
