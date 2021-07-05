@@ -60,7 +60,7 @@ namespace YTSharp
             var playlistItemsListRequest = youtubeService.PlaylistItems.List("snippet,contentDetails");
             //set playlistid to channels uploads id and set MaxResults from args
             playlistItemsListRequest.PlaylistId = uploadsID;
-            playlistItemsListRequest.MaxResults = int.Parse(args[Array.IndexOf(args, "-a") + 1].ToUpper() == "ALL" ? null : args[Array.IndexOf(args, "-a") + 1]);
+            playlistItemsListRequest.MaxResults = args[Array.IndexOf(args, "-a") + 1].ToUpper() == "ALL" ? 50 : int.Parse(args[Array.IndexOf(args, "-a") + 1]);
             //Create enumerable for videos
             List<Models.Video> videos = new();
             PlaylistItemListResponse playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
@@ -70,6 +70,9 @@ namespace YTSharp
                 //loop response items and add them to the list
                 foreach (var item in playlistItemsListResponse.Items)
                 {
+                    //private videos have no timestamp lol
+                    if (item.ContentDetails.VideoPublishedAt == null)
+                        continue;
                     //Add video to list
                     videos.Add(new Models.Video
 					{
